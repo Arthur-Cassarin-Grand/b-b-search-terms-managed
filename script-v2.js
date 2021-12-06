@@ -190,5 +190,3 @@ function main() {
     sheet.getRange("A1:Q").createFilter();
     sheet.sort(1, false)
 }
-
-
