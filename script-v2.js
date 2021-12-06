@@ -9,8 +9,9 @@
 * This script show in a sheet search terms that are not targeted by an exact keyword in your account.
 * For each keyword, a relevance score is calculated to easily see which ones deserves a dedicated ad group in a managed campaign.
 *
-* Version: 0.1
+* Version: 0.2
 * CHANGELOG
+* 0.2 - 06/12/2021 - Force Google to export paused campaigns and ad groups data
 * 0.1 - 05/12/2021 - Bêta
 **/
 
@@ -21,10 +22,10 @@
 spreadsheetUrl = "YOUR_SPREADSHEET_URL"; // MODIFY THIS
 
 /* ==== Min-Max settings (values MUST be filled) ==== */
-lastNDays = 180 // Select date range (e.g. 90, for 90 last days until yesterday)
-minImpressions = 10 // (>=) Minimum amount of impressions (format : 100)
-minClick = 5 // (>=) Minimum amount of clicks (format : 100)
-minConversions = 1.0 // (>=) Minimum amount of conversions (format : 100.5 or 100.0)
+lastNDays = 30 // Select date range (e.g. 90, for 90 last days until yesterday)
+minImpressions = 1 // (>=) Minimum amount of impressions (format : 100)
+minClick = 1 // (>=) Minimum amount of clicks (format : 100)
+minConversions = 0.1 // (>=) Minimum amount of conversions (format : 100.5 or 100.0)
 minConversionValue = 0.0 // (>=) Minimum conversion value (format : 100.5 or 100.0)
 maxCPA = 9999.0 // (<=) Most per conversion (format : 100.5 or 100.0)
 minCost = 0.1 // (>=) Minimum cost (format : 100.5 or 100.0)
@@ -78,6 +79,8 @@ function main() {
     var reportSearchTerms = AdsApp.report(
         "SELECT Query,Clicks,Cost,Impressions,Ctr,ConversionRate,CostPerConversion,Conversions,ConversionValue,CampaignName,AdGroupName,QueryMatchTypeWithVariant,TopImpressionPercentage " +
         " FROM SEARCH_QUERY_PERFORMANCE_REPORT " +
+        " WHERE AdGroupStatus IN [ENABLED, PAUSED] " +
+        " AND CampaignStatus IN [ENABLED, PAUSED] " +
         " DURING " + dateRange);
 
     var STrows = reportSearchTerms.rows();
@@ -164,7 +167,7 @@ function main() {
                 line.clicks,
                 line.impressions,
                 line.ctr,
-                (line.topImpressionPercentage)*100 + '%',
+                Math.round(line.topImpressionPercentage*100) + '%',
                 line.campaignName,
                 line.adGroupName
             ]);

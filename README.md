@@ -2,6 +2,8 @@
 
 Extrait les termes de recherche d'un compte, les classe et les ordonne en fonction de leur intérêt à être gérés sur le compte en [exact] dans une campagne Managed (1 groupe d'annonce = 1 mot-clé) pour gérer finement les enchères, afin d'obtenir les meilleures performances. L'affichage se fait dans un Google Spreadsheet généré en sortie du script.
 
+Contrairement à un export via l'interface Google Ads, ce script combine les termes de recherches identiques. Cela vous aidera à avoir une meilleure vue d'ensemble.
+
 ## COMMENT LE LANCER
 
 1. Aller dans votre compte Google Ads > "Outils et paramètres" > "Actions groupées" > "Scripts"
